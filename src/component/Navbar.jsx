@@ -1,18 +1,30 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { removeUser } from "../utils/userSlice";
-import { BASE_URL } from "../../env";
 
+import { BASE_URL } from "../../env";
+import { removeUser } from "../utils/userSlice";
+import { removefeed } from "../utils/feedSlice";
+import { removeConnectionUser } from "../utils/connectionSlice";
 const Navbar = () => {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logoutHandler = async () => {
-    await axios.post(BASE_URL + "/logout", { withCredentials: false });
-    dispatch(removeUser(null));
-    navigate("/");
+    try {
+      await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
+
+      // Clear frontend state
+      dispatch(removeUser());
+      dispatch(removefeed());
+      dispatch(removeConnectionUser());
+
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
+
   return (
     <div className="navbar bg-base-100 shadow-sm">
       {/* Left: Hamburger Dropdown */}
@@ -114,10 +126,12 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <a>Settings</a>
+                <Link to={"/connections"}>Connections</Link>
               </li>
               <li>
-                <a onClick={logoutHandler}>Logout</a>
+                <button onClick={logoutHandler} className="w-full text-left">
+                  Logout
+                </button>
               </li>
             </ul>
           </div>

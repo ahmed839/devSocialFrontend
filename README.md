@@ -16,3 +16,6 @@
 - login and see if ur data is comming in the store
 - navbar should update as soon as user logged in
 - create env file and folder structure
+- if token is not present redirect to login page
+- Logout
+- profile
