@@ -6,6 +6,7 @@ import { BASE_URL } from "../../env";
 import { removeUser } from "../utils/userSlice";
 import { removefeed } from "../utils/feedSlice";
 import { removeConnectionUser } from "../utils/connectionSlice";
+import { removeRequest } from "../utils/requestSlice";
 const Navbar = () => {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const Navbar = () => {
       dispatch(removeUser());
       dispatch(removefeed());
       dispatch(removeConnectionUser());
+      dispatch(removeRequest());
 
       navigate("/login");
     } catch (error) {
@@ -127,6 +129,9 @@ const Navbar = () => {
               </li>
               <li>
                 <Link to={"/connections"}>Connections</Link>
+              </li>
+              <li>
+                <Link to={"/request"}>Request</Link>
               </li>
               <li>
                 <button onClick={logoutHandler} className="w-full text-left">
